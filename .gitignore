@@ -1,0 +1,12 @@
+*.iml
+.gradle
+/local.properties
+/.idea/*
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/app/src/androidTest/java/com/ehang/ehhelper/ExampleInstrumentedTest.kt
+/app/src/test/java/com/ehang/ehhelper/ExampleUnitTest.kt
