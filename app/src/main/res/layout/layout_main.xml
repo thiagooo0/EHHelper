@@ -11,6 +11,11 @@
         android:layout_height="36dp"
         android:text="开启服务" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="抖音滑动服务需在手动在设置->无障碍中授权" />
+
     <Button
         android:id="@+id/btn_end_server"
         android:layout_width="120dp"

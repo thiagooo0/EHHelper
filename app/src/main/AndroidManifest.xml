@@ -18,7 +18,7 @@
         <activity
             android:name=".PortraitActivity"
             android:exported="false"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".LandscapeActivity"
             android:exported="false"
@@ -27,7 +27,15 @@
         <service
             android:name=".EHService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
 
         <activity
             android:name=".MainActivity"
