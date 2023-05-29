@@ -6,6 +6,7 @@ import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.res.Configuration
 import android.graphics.Path
 import android.graphics.PixelFormat
@@ -178,9 +179,9 @@ class EHService: AccessibilityService() {
 	private fun rotateScreen() {
 		val orientation = resources.configuration.orientation
 		if(orientation == Configuration.ORIENTATION_PORTRAIT) {
-			startActivity(Intent(this, LandscapeActivity::class.java))
+			startActivity(Intent(this, LandscapeActivity::class.java).addFlags(FLAG_ACTIVITY_NEW_TASK))
 		} else {
-			startActivity(Intent(this, PortraitActivity::class.java))
+			startActivity(Intent(this, PortraitActivity::class.java).addFlags(FLAG_ACTIVITY_NEW_TASK))
 		}
 	}
 }
