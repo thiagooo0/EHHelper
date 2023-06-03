@@ -43,6 +43,8 @@ class EHService: AccessibilityService() {
 	private var initialTouchY: Float = 0.toFloat()
 	private lateinit var upPath: Path
 	private lateinit var downPath: Path
+	private lateinit var upPathH: Path
+	private lateinit var downPathH: Path
 	private val windowManager: WindowManager by lazy { getSystemService(WINDOW_SERVICE) as WindowManager }
 	private val floatingButton: View by lazy {
 		val fb = LayoutInflater.from(this).inflate(R.layout.item_fb, null)
@@ -120,6 +122,15 @@ class EHService: AccessibilityService() {
 		downPath = Path()
 		downPath.moveTo(endPoint.x, endPoint.y)
 		downPath.lineTo(startPoint.x, startPoint.y)
+
+		val startPointH = PointF(screenHeight / 2f, screenWidth / 4f)
+		val endPointH = PointF(screenHeight / 2f, screenWidth * 3 / 4f)
+		upPathH = Path()
+		upPathH.moveTo(startPointH.x, startPointH.y)
+		upPathH.lineTo(endPointH.x, endPointH.y)
+		downPathH = Path()
+		downPathH.moveTo(endPointH.x, endPointH.y)
+		downPathH.lineTo(startPointH.x, startPointH.y)
 		val filter = IntentFilter()
 		filter.addAction(broadcastStartServer)
 		filter.addAction(broadcastStopServer)
@@ -148,19 +159,34 @@ class EHService: AccessibilityService() {
 			when(event.keyCode) {
 				KeyEvent.KEYCODE_DPAD_UP -> {
 					if(event.action == KeyEvent.ACTION_DOWN) {
-						Log.d(TAG, "往上滑")
-						dispatchGesture(
-							GestureDescription.Builder().addStroke(StrokeDescription(upPath, 0, 200)).build(),
-							null, null)
+						if (isPortrait()) {
+							Log.d(TAG, "往上滑")
+							dispatchGesture(
+								GestureDescription.Builder().addStroke(StrokeDescription(upPath, 0, 200)).build(),
+								null, null)
+						}else{
+							Log.d(TAG, "横屏往上滑")
+							dispatchGesture(
+								GestureDescription.Builder().addStroke(StrokeDescription(upPathH, 0, 200)).build(),
+								null, null)
+						}
 					}
 					return true
 				}
 				KeyEvent.KEYCODE_DPAD_DOWN -> {
 					if(event.action == KeyEvent.ACTION_DOWN) {
-						Log.d(TAG, "往下滑")
-						dispatchGesture(
-							GestureDescription.Builder().addStroke(StrokeDescription(downPath, 0, 200)).build(),
-							null, null)
+						if (isPortrait()){
+							Log.d(TAG, "往下滑")
+							dispatchGesture(
+								GestureDescription.Builder().addStroke(StrokeDescription(downPath, 0, 200)).build(),
+								null, null)
+						}else{
+							Log.d(TAG, "横屏往下滑")
+							dispatchGesture(
+								GestureDescription.Builder().addStroke(StrokeDescription(downPathH, 0, 200)).build(),
+								null, null)
+						}
+
 					}
 					return true
 				}
@@ -200,4 +226,6 @@ class EHService: AccessibilityService() {
 			startActivity(Intent(this, PortraitActivity::class.java).addFlags(FLAG_ACTIVITY_NEW_TASK))
 		}
 	}
+
+	private fun isPortrait() = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 }
